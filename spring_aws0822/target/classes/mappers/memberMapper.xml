@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- member와 관련된 쿼리문들을 저장함 / mapp-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.myaws.myapp.persistance.MemberMapper"> 
+<!-- mybatis용 메서드/실질적으로는 여기서 만들기 때문에 인터페이스로 생성한다. -->
+<!-- public int memberInsert(MemberVo mv); // 매소드 이름과 파라미터 이름과 동일하게 넘어옴 -->
+<insert id="memberInsert" parameterType="mv">
+insert into member(memberid,memberpwd,membername,membergender,memberbirth,memberaddr,memberphone,memberemail,memberhobby)
+values(#{memberid},#{memberpwd},#{membername},#{membergender},#{memberbirth},#{memberaddr},#{memberphone},#{memberemail},#{memberhobby})
+</insert>
+
+</mapper>
+

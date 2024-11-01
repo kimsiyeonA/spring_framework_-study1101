@@ -1,0 +1,35 @@
+@charset "UTF-8";
+
+body{width:80%; margin:0 auto;}
+a{text-decoration: none;
+color:black;}
+
+
+/*button*/
+button{
+	padding : 5px 0;
+	width: 2cm;
+	display:inline-block;
+	background: black;
+	color : white;
+	border-style: none;
+}
+
+
+/*table*/
+table{
+	 margin : 20px 0 ;
+	 width:100%;
+	 border : 1px solid #1d435c;
+	 border-collapse : collapse; 
+     text-align: center;
+	}
+td, th {
+	 border-bottom : 1px dotted darkgray;
+	 padding : 5px;
+	 
+	}
+	
+.writer tr td:last-child {
+ text-align: left;
+}
