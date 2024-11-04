@@ -1,6 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%
 
+String msg="";
+if(request.getAttribute("msg")!=null){
+	msg=(String)request.getAttribute("msg");
+}
+
+
+%>
 
 <!DOCTYPE HTML>
 <HTML>
@@ -68,6 +76,12 @@ td{
 }
   </style>
   <script>
+  <%
+  if(msg != ""){
+	  out.println("alert('"+msg+"')");
+  }
+  %>
+  
   // 아이디, 비밀번호 유효성 검사
   function check(){
 	  // 이름으로 객체 찾기 

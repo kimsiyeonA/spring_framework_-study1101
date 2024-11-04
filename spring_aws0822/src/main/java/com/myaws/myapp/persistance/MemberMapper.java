@@ -8,4 +8,8 @@ import com.myaws.myapp.domain.MemberVo;
 public interface MemberMapper {
 
 		public int memberInsert(MemberVo mv);
+		
+		public int memberIdCheck(String memberid);
+		
+		public MemberVo memberLoginCheck(String memberid);
 }

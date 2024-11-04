@@ -23,9 +23,6 @@ public class MemberServiceImpl implements MemberService{
 		
 	}
 	
-	
-	
-
 	@Override // 여기서 재정의 해라 - mybatis와 연동
 	public int memberInsert(MemberVo mv) {
 		
@@ -34,5 +31,17 @@ public class MemberServiceImpl implements MemberService{
 		return value;
 	}
 
+	@Override
+	public int memberIdCheck(String memberid) {
+		
+		int value = mm.memberIdCheck(memberid);
+		return value;
+	}
 	
+	@Override
+	public MemberVo memberLoginCheck(String memberid) {
+		 MemberVo mv = mm.memberLoginCheck(memberid);
+		 System.out.println("MemberServiceImpl.java memberLoginCheck mv"+mv);
+		return mv;
+	}
 }

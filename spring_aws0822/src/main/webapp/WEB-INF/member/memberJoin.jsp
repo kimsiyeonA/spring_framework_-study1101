@@ -112,14 +112,12 @@ $(document).ready(function(){
 			alert("아이디를 입력해주세요")
 			return;
 		}
-		$.ajax({
-			type : "post", // 전송 방식을 무엇으로 할지
-			url : "<%=request.getContextPath()%>/member/memberIdCheck.aws", // 넘기는 주소
-			dataType : "json", //json타입은 문서에서 {"키값":"value값","키값2":"value2값"}
+		$.ajax({ // HTML과 JSON을 연결한다.
+			type : "post", 
+			url : "<%=request.getContextPath()%>/member/memberIdCheck.aws", 
+			dataType : "json", 
 			data : {"memberId" : memberId},
-			success : function(result){//결과가 넘어와서 성공했을 때 받는 영역
-				//alert("길이는"+result.length);
-				//alert("cnt값은"+result.cnt);
+			success : function(result){
 				if(result.cnt==0){
 					alert("사용할 수 있는 아이디 입니다.");
 					$("#btn").val("Y");
@@ -128,12 +126,11 @@ $(document).ready(function(){
 					$("#memberid").val("");
 				}
 			},
-			error : function(result){// 결과가 실패했을 때 받는 영역
+			error : function(result){
 				alert("전송 실패 테스트")
 			} 
 		});
-		// 에이작스에서 결과가 안들어와도 아래 코드가 실행됨
-		// 기다리다가 결과가 나타남(기다리는게 비동기성)
+
 	});
 });
 // 
@@ -156,7 +153,6 @@ $(document).ready(function(){
 		<td class = "idcolor">아이디</td>
 		<td>
 		<input type = "text" id="memberid" name="memberid" maxlength = "50" style = "width:300px;"   placeholder ="아이디를 입력하세요" >
-		 <!--<input type = "text" name="memberid1" maxlength = "50" style = "width:300px;"   placeholder ="아이디를 입력하세요" ></td>-->
 		<button type="button" id="btn" name="btn" value="N">아이디중복체크</button>
 		</td>
 	</tr>
