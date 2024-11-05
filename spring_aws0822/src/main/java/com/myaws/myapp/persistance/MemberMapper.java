@@ -1,10 +1,12 @@
 package com.myaws.myapp.persistance;
 
+import java.util.ArrayList;
+
 import com.myaws.myapp.domain.MemberVo;
 
-// ¸¶ÀÌ¹ÙÆ¼½º¿¡¼­ »ç¿ëÇÒ ¸Ş¼Òµå¸¦ Á¤ÀÇÇØ ³õÀº °÷
-// ÀÎÅÍÆäÀÌ½º : ±Ô°İ¿¡ ¸ÂÃß¾î¼­ Á¢¼ÓÇÒ ¼ö ÀÖ°Ô ÇÔ
-// ¸Ş¼ÒµåÀÇ ÀÌ¸§, ÀÚ·áÇü, ¹Ş´Â ÀÚ·áÇüÀ» Á¤ÇØ³õÀ½
+//ë§ˆì´ë°”í‹°ìŠ¤ì—ì„œ ì‚¬ìš©í•  ë©”ì†Œë“œë¥¼ ì •ì˜í•´ ë†“ì€ ê³³
+//ì¸í„°í˜ì´ìŠ¤ : ê·œê²©ì— ë§ì¶”ì–´ì„œ ì ‘ì†í•  ìˆ˜ ìˆê²Œ í•¨
+//ë©”ì†Œë“œì˜ ì´ë¦„, ìë£Œí˜•, ë°›ëŠ” ìë£Œí˜•ì„ ì •í•´ë†“ìŒ
 public interface MemberMapper {
 
 		public int memberInsert(MemberVo mv);
@@ -12,4 +14,6 @@ public interface MemberMapper {
 		public int memberIdCheck(String memberid);
 		
 		public MemberVo memberLoginCheck(String memberid);
+		
+		public ArrayList<MemberVo> memberSelectAll();
 }

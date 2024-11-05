@@ -2,9 +2,9 @@ package com.myaws.myapp.domain;
 
 public class MemberVo {
 
-	private int midx;				//DB테이블에 있는 컬럼이름과 동일하게 작성한다.
-	private String memberid;		// 바인딩 기술을 사용하기 위해 
-	private String memberpwd;		// Html input name 명과 동일하게 맞춘다.
+	private int midx;				
+	private String memberid;		
+	private String memberpwd;		
 	private String membername;		
 	private String membergender;
 	private String memberbirth;

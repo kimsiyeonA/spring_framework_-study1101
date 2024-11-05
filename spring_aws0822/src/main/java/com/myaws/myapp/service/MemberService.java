@@ -1,14 +1,19 @@
 package com.myaws.myapp.service;
 
+import java.util.ArrayList;
+
 import com.myaws.myapp.domain.MemberVo;
 
-// »ç¿ëÇÒ ¸Ş¼Òµå Á¤ÀÇ
+//ì‚¬ìš©í•  ë©”ì†Œë“œ ì •ì˜
+// ìŠ¤í”„ë§ì—ì„œ MEMBERê¸°ëŠ¥ì—ì„œ ì‚¬ìš©í•  ë©”ì†Œë“œë¥¼ ì„ ì–¸í•˜ëŠ” ê²ƒ
 public interface MemberService {
 	
-	// ms¿Í °°Áö¸¸ ´Ù¸¥ °æ¿ì·Î ¾µ ¼ö ÀÖ±â¶§¹®¿¡ ±¸ºĞÇØ³õÀ½
+	// msì™€ ê°™ì§€ë§Œ ë‹¤ë¥¸ ê²½ìš°ë¡œ ì“¸ ìˆ˜ ìˆê¸°ë•Œë¬¸ì— êµ¬ë¶„í•´ë†“ìŒ
 	public int memberInsert(MemberVo mv);
 	
 	public int memberIdCheck(String memberid);
 	
 	public MemberVo memberLoginCheck(String memberid);
+	
+	public ArrayList<MemberVo> memberSelectAll();
 }

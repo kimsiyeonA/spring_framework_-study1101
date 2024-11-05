@@ -1,5 +1,7 @@
 package com.myaws.myapp.controller;
 
+import java.util.ArrayList;
+
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,55 +23,56 @@ import com.myaws.myapp.service.Test;
 import netscape.javascript.JSException;
 import netscape.javascript.JSObject;
 
-@Controller // ½ºÇÁ¸µ¿¡°Ô ÄÁÆ®·Ñ·¯ ¿ëµµ·Î »ç¿ëÇÒ ¼ö ÀÖ°Ô ¿äÃ»ÇÔ
-@RequestMapping(value = "/member/") // FrontController Ã³·³
+@Controller // ìŠ¤í”„ë§ì—ê²Œ ì»¨íŠ¸ë¡¤ëŸ¬ ìš©ë„ë¡œ ì‚¬ìš©í•  ìˆ˜ ìˆê²Œ ìš”ì²­í•¨
+@RequestMapping(value = "/member/")// FrontController ì²˜ëŸ¼
 public class MemberController {
 	
-	// µğ¹ö±ë ÄÚµåÃ³·³ Âï¾îº¼ ¼ö ÀÖÀ½
+	// ë””ë²„ê¹… ì½”ë“œì²˜ëŸ¼ ì°ì–´ë³¼ ìˆ˜ ìˆìŒ
 	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 	
-	//@Autowired // test·Î »ı¼ºµÈ °´Ã¼¸¦ ÁÖÀÔÇØÁà
-	//private Test tt; //Test Å¬·¡½º¿¡ tt¶ó´Â º¯¼ö ¼±¾ğ
+	//@Autowired // testë¡œ ìƒì„±ëœ ê°ì²´ë¥¼ ì£¼ì…í•´ì¤˜
+	//private Test tt; //Test í´ë˜ìŠ¤ì— ttë¼ëŠ” ë³€ìˆ˜ ì„ ì–¸
 	
-	@Autowired // ºÎ¸ğ·Î ÁöÁ¤ÇÏ°í ¿À¹ö¶óÀÌµù µÈ ÀÚ½ÄÀ» ºÒ·¯¿À°í ÀÖÀ½, ºÎ¸ğ ÀÎ¼­Æ®¸¦ ¿À¹ö¶óÀÌµù ÇÑ Å¬·¡½ºµéÀ» °¡Áö°í¿È 
+	@Autowired // ë¶€ëª¨ë¡œ ì§€ì •í•˜ê³  ì˜¤ë²„ë¼ì´ë”© ëœ ìì‹ì„ ë¶ˆëŸ¬ì˜¤ê³  ìˆìŒ, ë¶€ëª¨ ì¸ì„œíŠ¸ë¥¼ ì˜¤ë²„ë¼ì´ë”© í•œ í´ë˜ìŠ¤ë“¤ì„ ê°€ì§€ê³ ì˜´ 
 	private MemberService memberService;
 	
-	//ºñ¹Ğ¹øÈ£¸¦ ¾ÏÈ£È­ÇÏ¿© ÀÎÄÚµùÇÏ´Â ¿ªÇÒ
+	//ë¹„ë°€ë²ˆí˜¸ë¥¼ ì•”í˜¸í™”í•˜ì—¬ ì¸ì½”ë”©í•˜ëŠ” ì—­í• 
 	@Autowired(required=false)
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
-	// °¡»ó°æ·Î¿Í ¸Ş¼ÒµåµéÀ» ¸ÅÇÎ½ÃÅ´
-	// ÇØ´çµÇ´Â °¡»ó°æ·Î¿Í ¸Ş¼Òµå¸¦ ¸ÅÇÎ ½ÃÄÑ°í get ¹æ½ÄÀ¸·Î ³Ñ°Ü ¹ŞÀ½
-	// ÇÚµé·¯ ¸ÅÇÎ ¾È¿¡ ÇÚµé·¯ ¾î´ğÅÍ°¡ Ã£¾Æ¼­ ½ÇÇà½ÃÅ´
+	// ê°€ìƒê²½ë¡œì™€ ë©”ì†Œë“œë“¤ì„ ë§¤í•‘ì‹œí‚´
+	// í•´ë‹¹ë˜ëŠ” ê°€ìƒê²½ë¡œì™€ ë©”ì†Œë“œë¥¼ ë§¤í•‘ ì‹œì¼œê³  get ë°©ì‹ìœ¼ë¡œ ë„˜ê²¨ ë°›ìŒ
+	// í•¸ë“¤ëŸ¬ ë§¤í•‘ ì•ˆì— í•¸ë“¤ëŸ¬ ì–´ëŒ‘í„°ê°€ ì°¾ì•„ì„œ ì‹¤í–‰ì‹œí‚´
 	@RequestMapping(value = "memberJoin.aws", method = RequestMethod.GET)
 	public String memberJoin() {
 	
-		 //sysoutº¸´Ù ¸®¼Ò½º¸¦ Àû°Ô °¡Áö°í¿È
-		// ÇØ´ç °æ·Î¸¦ ¾Ë·ÁÁØ ´ÙÀ½ ÀÛ¼ºµÇ¾î ÀÖ´Â °ªÀ» ¾Ë·ÁÁÜ
-		logger.info("memberJoin µé¾î¿È");
-		//logger.info("tt°ªÀº"+tt.test()); // tt °´Ã¼¿¡ ÀÖ´Â ¸Ş¼­µå ºÒ·¯¿À±â
+		 //sysoutë³´ë‹¤ ë¦¬ì†ŒìŠ¤ë¥¼ ì ê²Œ ê°€ì§€ê³ ì˜´
+		// í•´ë‹¹ ê²½ë¡œë¥¼ ì•Œë ¤ì¤€ ë‹¤ìŒ ì‘ì„±ë˜ì–´ ìˆëŠ” ê°’ì„ ì•Œë ¤ì¤Œ
+		logger.info("memberJoin ï¿½ï¿½ï¿½ï¿½");
+		//logger.info("ttê°’ì€"+tt.test()); // tt ê°ì²´ì— ìˆëŠ” ë©”ì„œë“œ ë¶ˆëŸ¬ì˜¤ê¸°
 		
-		return "WEB-INF/member/memberJoin"; // .jsp´Â WEB-INF/spring/appServlet/servlet-context.xml > ¿¡¼­ ºÑ¾îÁü
+		return "WEB-INF/member/memberJoin"; // .jspëŠ” WEB-INF/spring/appServlet/servlet-context.xml > ì—ì„œ ë¶‡ì–´ì§
+	
 	}
 	
 	@RequestMapping(value = "memberLogin.aws", method = RequestMethod.GET)
 	public String memberLogin() {
 		
-		logger.info("memberLogin µé¾î¿È");
-		// ¸ğµ¨·Î °ªÀ» °¡Áö°í ´Ù´Ò ¼ö ÀÖÀ½ > ´ãÀº µ¥ÀÌÅÍ°¡ °¡Áö°í ÀÖÀ½
-		// ÇÑ¹ø ¾²¸é ¾È³ªÅ¸³ª°Ô ÇÏ´Â ÀÏÈ¸¿ë Å¬·¡½º ±â´ÉÀÌ ÀÖ´Â Å¬·¡½º¸¦ »ç¿ë
-		// ·Î±×ÀÎÀ» ÇßÀ» ¶§ ´Ù½Ã ·Î±×ÀÎÃ¢ÀÌ ¾È³ªÅ¸³ª°Ô ÇÔ
+		logger.info("memberLogin ï¿½ï¿½ï¿½ï¿½");
+		// ëª¨ë¸ë¡œ ê°’ì„ ê°€ì§€ê³  ë‹¤ë‹ ìˆ˜ ìˆìŒ > ë‹´ì€ ë°ì´í„°ê°€ ê°€ì§€ê³  ìˆìŒ
+		// í•œë²ˆ ì“°ë©´ ì•ˆë‚˜íƒ€ë‚˜ê²Œ í•˜ëŠ” ì¼íšŒìš© í´ë˜ìŠ¤ ê¸°ëŠ¥ì´ ìˆëŠ” í´ë˜ìŠ¤ë¥¼ ì‚¬ìš©
+		// ë¡œê·¸ì¸ì„ í–ˆì„ ë•Œ ë‹¤ì‹œ ë¡œê·¸ì¸ì°½ì´ ì•ˆë‚˜íƒ€ë‚˜ê²Œ í•¨
 		
 		
 		return "WEB-INF/member/memberLogin"; 
 	}
 	
 	@RequestMapping(value = "memberJoinAction.aws", method = RequestMethod.POST)
-	public String memberJoinAction(MemberVo mv) { // usebean Ã³·³ ¹Ù¿îµù ¹Ş¾Æ ¾²±â
-		logger.info("memberJoinAction µé¾î¿È");
+	public String memberJoinAction(MemberVo mv) { // usebean ì²˜ëŸ¼ ë°”ìš´ë”© ë°›ì•„ ì“°ê¸°
+		logger.info("memberJoinAction ï¿½ï¿½ï¿½ï¿½");
 		logger.info("bCryptPasswordEncoder"+bCryptPasswordEncoder);
-		// ºñ¹Ğ¹øÈ£ ¾ÏÈ£È­ Ã³¸®
-		// µé¾î¿Â ºñ¹Ğ¹øÈ£¸¦ ¾ÏÈ£È­½ÃÅ°°í ¾ÏÈ£È­½ÃÅ²°ÍÀ» ´ã´Â´Ù.
+		// ë¹„ë°€ë²ˆí˜¸ ì•”í˜¸í™” ì²˜ë¦¬
+		// ë“¤ì–´ì˜¨ ë¹„ë°€ë²ˆí˜¸ë¥¼ ì•”í˜¸í™”ì‹œí‚¤ê³  ì•”í˜¸í™”ì‹œí‚¨ê²ƒì„ ë‹´ëŠ”ë‹¤.
 		String memberpwd_enc = bCryptPasswordEncoder.encode(mv.getMemberpwd());
 		mv.setMemberpwd(memberpwd_enc);
 		
@@ -80,29 +84,29 @@ public class MemberController {
 			path = "redirect:/";
 		}else if(value==0) {
 			path = "redirect:/member/memberJoin.aws";
-			// ½ÇÆĞÇÏ¸é °¡ÀÔÆäÀÌÁö·Î µé¾î°¨
+			// ì‹¤íŒ¨í•˜ë©´ ê°€ì…í˜ì´ì§€ë¡œ ë“¤ì–´ê°
 		}
 		logger.info("memberJoinAction path"+path);
 	
 		return path; 
 	}
 
-	@ResponseBody //jsonÆÄÀÏ °á°ú°¡ ³ªÅ¸³­´Ù.
-	@RequestMapping(value = "memberIdCheck.aws", method = RequestMethod.POST) // Áö¿ì¸é Æ÷½ºÆ®,get µÑ´Ù ÀÎ½ÄÇÔ
-	// Áö¿üÀ» ¶§ °á°ú È®ÀÎ °¡´É http://localhost:8080/myapp/member/memberIdCheck.aws?memberId=%E3%84%B9%E3%84%B9%E3%84%B9
-	// Post·Î ÁöÁ¤ÇÏ¸é È®ÀÎ ¸øÇÔ
+	@ResponseBody //jsonï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å¸ï¿½ï¿½ï¿½ï¿½.
+	@RequestMapping(value = "memberIdCheck.aws", method = RequestMethod.POST) // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®,get ï¿½Ñ´ï¿½ ï¿½Î½ï¿½ï¿½ï¿½
+	// ì§€ì› ì„ ë•Œ ê²°ê³¼ í™•ì¸ ê°€ëŠ¥ http://localhost:8080/myapp/member/memberIdCheck.aws?memberId=%E3%84%B9%E3%84%B9%E3%84%B9
+	// Postë¡œ ì§€ì •í•˜ë©´ í™•ì¸ ëª»í•¨
 	public JSONObject memberIdCheck(@RequestParam("memberId") String memberId) {
-		logger.info("memberIdCheck µé¾î¿È");
+		logger.info("memberIdCheck ï¿½ï¿½ï¿½ï¿½");
 		logger.info("memberId"+memberId);
 		
-		// °æ¿ì¿¡ µû¶ó °´Ã¼»ı¼ºÀ» ÇÒ ¼öµµ ÀÖÀ½ -> Æ÷Á¶ ¹æ½Ä
-		// ¸É¹ö ¼­ºñ½º ÀÎÅÍÆäÀÌ½º ¼±¾ğ ÈÄ ±¸Çö ¸¶ÀÌ¹ÙÆ¼½º¿¡ Á¢¼Ó ÇÏ¿© Äõ¸® ½á¼­ ½ÇÇà
+		// ê²½ìš°ì— ë”°ë¼ ê°ì²´ìƒì„±ì„ í•  ìˆ˜ë„ ìˆìŒ -> í¬ì¡° ë°©ì‹
+		// ë§´ë²„ ì„œë¹„ìŠ¤ ì¸í„°í˜ì´ìŠ¤ ì„ ì–¸ í›„ êµ¬í˜„ ë§ˆì´ë°”í‹°ìŠ¤ì— ì ‘ì† í•˜ì—¬ ì¿¼ë¦¬ ì¨ì„œ ì‹¤í–‰
 		int cnt = memberService.memberIdCheck(memberId);
 		logger.info("memberIdCheck cnt"+cnt);
 		
-		// json ÀÛ¼ºÇÏ´Â ¸ŞÀÌºì ´Ù¿î¹Ş¾Æ¼­ È°¿ëÇÏ±â
+		// json ì‘ì„±í•˜ëŠ” ë©”ì´ë¸ ë‹¤ìš´ë°›ì•„ì„œ í™œìš©í•˜ê¸°
 		//PrintWriter out = response.getWriter();
-		//out.print("{\"cnt\": \""+cnt+"\"}"); 
+		//out.print("{\"cnt\": \""+cnt+"\"}");
 		
 		JSONObject obj = new JSONObject();
 		obj.put("cnt", cnt);
@@ -114,25 +118,28 @@ public class MemberController {
 	public String memberLoginAction(
 			@RequestParam("memberid") String memberid, 
 			@RequestParam("memberpwd") String memberpwd,
-			// ÀÏÈ¸¿ë + ¸ğµ¨ÀÇ ±â´É
+			// ì¼íšŒìš© + ëª¨ë¸ì˜ ê¸°ëŠ¥
 			RedirectAttributes rttr
-			) { // usebean Ã³·³ ¹Ù¿îµù ¹Ş¾Æ ¾²±â
+			) {// usebean ì²˜ëŸ¼ ë°”ìš´ë”© ë°›ì•„ ì“°ê¸°
 
 		MemberVo mv = memberService.memberLoginCheck(memberid);
-		// ÀúÀåµÈ ºñ¹Ğ¹øÈ£¸¦ °¡Áö°í ¿Â´Ù.
+		// ì €ì¥ëœ ë¹„ë°€ë²ˆí˜¸ë¥¼ ê°€ì§€ê³  ì˜¨ë‹¤.
 		String path = "";
-		if(mv != null) { // ¾ÆÀÌµğ°¡ ¾Èµé¾î°¡Á® ÀÖÀ¸¸é
+		if(mv != null) { // ì•„ì´ë””ê°€ ì•ˆë“¤ì–´ê°€ì ¸ ìˆìœ¼ë©´
 			String reservedPwd = mv.getMemberpwd();
 		
 			
 			if(bCryptPasswordEncoder.matches(memberpwd, reservedPwd)  ){
-				//System.out.println("ºñ¹Ğ¹øÈ£ ÀÏÄ¡");
-				/*
-				 * rttr.addAttribute("midx",mv.getMidx());
-				 * rttr.addAttribute("memberId",mv.getMemberid());
-				 * rttr.addAttribute("memberName",mv.getMembername());
-				 */
-				// Äõ¸®¿Í input ³×ÀÓÀ» ¹ÙÀÎµùÇÏ±â À§ÇØ¼­ ¼Ò¹®ÀÚ·Î ÀÛ¼ºÇÔ
+				//System.out.println("ï¿½ï¿½Ğ¹ï¿½È£ ï¿½ï¿½Ä¡");
+				
+				// ï¿½ï¿½ï¿½ï¿½ : ï¿½Ï³ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½á¼º ipï¿½ï¿½ ï¿½ï¿½ï¿½Æµï¿½ ï¿½ï¿½ï¿½ï¿½idï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ù¸ï¿½ï¿½ï¿½ / È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ç¿ï¿½ ï¿½ï¿½ï¿½ï¿½
+				  
+				rttr.addAttribute("midx",mv.getMidx()); 
+				rttr.addAttribute("memberId",mv.getMemberid());
+				rttr.addAttribute("memberName",mv.getMembername());
+				 
+				  
+				// ì¿¼ë¦¬ì™€ input ë„¤ì„ì„ ë°”ì¸ë”©í•˜ê¸° ìœ„í•´ì„œ ì†Œë¬¸ìë¡œ ì‘ì„±í•¨
 				// 
 				path="redirect:/";
 				
@@ -142,29 +149,38 @@ public class MemberController {
 				 * rttr.addAttribute("memberId","");
 				 * rttr.addAttribute("memberName","");
 				 */
-				rttr.addFlashAttribute("msg","¾ÆÀÌµğ/ºñ¹Ğ¹øÈ£¸¦ È®ÀÎÇØÁÖ¼¼¿ä.");
-				// ´ã¾Æ³õÀ¸¸é ÇÑ¹ø¸¸ ¾µ ¼ö ÀÖÀ½ (¼¼¼ÇÀ» °¡Áö°í °¬´Ù°¡ ÇÑ¹ø ¾²¸é »ç¶óÁü)
+				rttr.addFlashAttribute("msg","ì•„ì´ë””/ë¹„ë°€ë²ˆí˜¸ë¥¼ í™•ì¸í•´ì£¼ì„¸ìš”.");
+				// ë‹´ì•„ë†“ìœ¼ë©´ í•œë²ˆë§Œ ì“¸ ìˆ˜ ìˆìŒ (ì„¸ì…˜ì„ ê°€ì§€ê³  ê°”ë‹¤ê°€ í•œë²ˆ ì“°ë©´ ì‚¬ë¼ì§)
 				path="redirect:/member/memberLogin.aws";
 				
 			}
 		}else {
-			/* ·Î±×ÀÎÇÏ¸é ¼¼¼Ç¿¡ ´ã±â À§ÇØ¼­
+			/* ë¡œê·¸ì¸í•˜ë©´ ì„¸ì…˜ì— ë‹´ê¸° ìœ„í•´ì„œ
 			 * rttr.addAttribute("midx",""); 
 			 * rttr.addAttribute("memberId","");
 			 * rttr.addAttribute("memberName","");
 			 */
-			rttr.addFlashAttribute("msg","ÇØ´çÇÏ´Â ¾ÆÀÌµğ°¡ ¾ø½À´Ï´Ù.");
+			rttr.addFlashAttribute("msg","í•´ë‹¹í•˜ëŠ” ì•„ì´ë””ê°€ ì—†ìŠµë‹ˆë‹¤.");
 			path="redirect:/member/memberLogin.aws";
 			
 		}
 		logger.info("memberLoginAction path"+path);
-		// È¸¿øÁ¤º¸¸¦ ¼¼¼Ç¿¡ ´ã´Â´Ù.
-		// ·Î±×ÀÎÀÌ ¾ÈµÇ¸é ´Ù½Ã ·Î±×ÀÎÆäÀÌÁö·Î °¡°í (ºñ¹Ğ¹øÈ£¸¦ ¾ÏÈ£È­ ÇØ¼­ ³Ñ±â°í ¹ŞÀ» ¼ö ÀÖ°Ô ¸¸µé±â)
-		// ·Î±×ÀÎÀÌ µÇ¸é ¸ŞÀÎÀ¸·Î °¡¶ó
+		// íšŒì›ì •ë³´ë¥¼ ì„¸ì…˜ì— ë‹´ëŠ”ë‹¤.
+		// ë¡œê·¸ì¸ì´ ì•ˆë˜ë©´ ë‹¤ì‹œ ë¡œê·¸ì¸í˜ì´ì§€ë¡œ ê°€ê³  (ë¹„ë°€ë²ˆí˜¸ë¥¼ ì•”í˜¸í™” í•´ì„œ ë„˜ê¸°ê³  ë°›ì„ ìˆ˜ ìˆê²Œ ë§Œë“¤ê¸°)
+		// ë¡œê·¸ì¸ì´ ë˜ë©´ ë©”ì¸ìœ¼ë¡œ ê°€ë¼
 	
 		return path; 
 	}
 	
+	@RequestMapping(value = "memberList.aws", method = RequestMethod.GET)
+	public String memberList(Model model) {
+		
+		logger.info("memberList ï¿½ï¿½ï¿½ï¿½");
+		ArrayList<MemberVo> alist = memberService.memberSelectAll();
+		
+		model.addAttribute("alist", alist);
+		return "WEB-INF/member/memberList"; 
+	}
 }
 
 

@@ -20,4 +20,9 @@ select count(*)as cnt from member where memberid=#{memberid}
 <select id="memberLoginCheck" parameterType="String" resultType="mv">
 select * from member where memberid=#{memberid}
 </select>
+
+<select id="memberSelectAll" resultType="mv"> <!--mv 로 여러개를 넘긴다.  파라미터 없음 -->
+select * from member where delyn='n'order by midx desc
+</select>
+
 </mapper>

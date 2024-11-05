@@ -1,5 +1,7 @@
 package com.myaws.myapp.service;
 
+import java.util.ArrayList;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -7,23 +9,23 @@ import org.springframework.stereotype.Service;
 import com.myaws.myapp.domain.MemberVo;
 import com.myaws.myapp.persistance.MemberMapper;
 
-// Ã¹¹øÂ° ºÎÅÍ ÀÎ°ÍÀº ÆÄ½ºÄ®
-// ÀÎÅÍÆäÀÌ½º¸¦ ±¸ÇöÇÑÇÑ´Ù.
-@Service //>>@Component/@Bean°¡ ºÎ¸ğ : ¼­ºñ½º ¿ëµµÀÇ ºóÀÌ´Ù.
+//ì²«ë²ˆì§¸ ë¶€í„° ì¸ê²ƒì€ íŒŒìŠ¤ì¹¼
+//ì¸í„°í˜ì´ìŠ¤ë¥¼ êµ¬í˜„í•œí•œë‹¤.
+@Service //>>@Component/@Beanê°€ ë¶€ëª¨ : ì„œë¹„ìŠ¤ ìš©ë„ì˜ ë¹ˆì´ë‹¤.
 public class MemberServiceImpl implements MemberService{
 	
-	private MemberMapper mm; // ¸É¹öº¯¼ö ¼±¾ğÇÏ±â
+	private MemberMapper mm; // ï¿½É¹ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½
 	
-	@Autowired //½ºÇÁ¸µ ÄÚ¾î¿¡´Ù°¡ ºóÀ¸·Î ¸¸µç ¼¼¼ÇÀ» ºÎ¸§ > °´Ã¼·Î »ı¼ºµÇ¾î ÀÖ´Â °ÍÁß¿¡ °°Àº Å¬·¡½º Å¸ÀÔÀ» Ã£¾Æ¼­ ÁÖÀÔ½ÃÅ´
-	public MemberServiceImpl(SqlSession sqlSession) { // »ı¼ºÀÚ¸¦ ÅëÇØ¼­ ¸Å°³º¯¼ö·Î SqlSessionÀ» ¹ŞÀ½
-		// ¸¸µé¾îÁø ¸ŞÆÛ¸¦ ¾µ²¨ÀÓ com.myaws.myapp.persistance > MemberMapper.java
-		// Æ¯ÀÌÇÑ Á¡Àº .classÀ» ºÙ¿©¾ßÇÔ
-		// ¸É¹öº¯¼ö¿¡ ¿¬°á
+	@Autowired //ìŠ¤í”„ë§ ì½”ì–´ì—ë‹¤ê°€ ë¹ˆìœ¼ë¡œ ë§Œë“  ì„¸ì…˜ì„ ë¶€ë¦„ > ê°ì²´ë¡œ ìƒì„±ë˜ì–´ ìˆëŠ” ê²ƒì¤‘ì— ê°™ì€ í´ë˜ìŠ¤ íƒ€ì…ì„ ì°¾ì•„ì„œ ì£¼ì…ì‹œí‚´
+	public MemberServiceImpl(SqlSession sqlSession) { // ìƒì„±ìë¥¼ í†µí•´ì„œ ë§¤ê°œë³€ìˆ˜ë¡œ SqlSessionì„ ë°›ìŒ
+		// ë§Œë“¤ì–´ì§„ ë©”í¼ë¥¼ ì“¸êº¼ì„ com.myaws.myapp.persistance > MemberMapper.java
+		// íŠ¹ì´í•œ ì ì€ .classì„ ë¶™ì—¬ì•¼í•¨
+		// ë§´ë²„ë³€ìˆ˜ì— ì—°ê²°
 		this.mm = sqlSession.getMapper(MemberMapper.class); 
 		
 	}
 	
-	@Override // ¿©±â¼­ ÀçÁ¤ÀÇ ÇØ¶ó - mybatis¿Í ¿¬µ¿
+	@Override /// ì—¬ê¸°ì„œ ì¬ì •ì˜ í•´ë¼ - mybatisì™€ ì—°ë™
 	public int memberInsert(MemberVo mv) {
 		
 		int value = mm.memberInsert(mv);
@@ -43,5 +45,11 @@ public class MemberServiceImpl implements MemberService{
 		 MemberVo mv = mm.memberLoginCheck(memberid);
 		 System.out.println("MemberServiceImpl.java memberLoginCheck mv"+mv);
 		return mv;
+	}
+	
+	@Override
+	public ArrayList<MemberVo> memberSelectAll() {
+		ArrayList<MemberVo> alist = mm.memberSelectAll();
+		return alist;
 	}
 }
