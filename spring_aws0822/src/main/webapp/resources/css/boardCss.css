@@ -1,0 +1,162 @@
+@charset "UTF-8";
+
+
+body{width:80%; margin:0 auto;}
+a{text-decoration: none;
+color:black;}
+img{width:20%;height: 20%;}
+p{padding:0 2%}
+h2{padding:0 2%}
+.green{
+	color:green;
+}
+
+/*div line*/
+.divlinebt{
+    border-bottom: 1px solid lightgray;
+    border-top: 1px solid lightgray;
+}
+.divlineblack{
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
+}
+
+
+
+/*div 정렬*/
+.inline {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.inline span {
+    margin-left: auto; 
+}
+.contentadmin {
+	text-align : center;
+	padding:5px 0;
+	width:30%; 
+    display: inline-block;
+    background : black;
+    color : white; 
+}
+.divlineright{
+	text-align: right;
+}
+.divlinerightm{
+	text-align: right;
+	margin: 10px;	
+}
+.divlinecenter{
+	text-align: center;
+}
+.divlinecenter span{
+	display:inline-block;
+	margin: 3px;
+	padding: 3px;
+	width: 20px;
+	height: 20px;
+}
+.divlinecenter span:active, .divlinecenter.on {
+	display:inline-block;
+	margin: 3px;
+	padding: 3px;
+	width: 20px;
+	height: 20px;
+	background: black;
+	color: white;
+}
+
+
+
+/*button*/
+button{
+	padding : 5px 0;
+	width: 2cm;
+	display:inline-block;
+	background: black;
+	color : white;
+	border-style: none;
+}
+.btnLeft{
+	text-align: right;
+}
+.btncontent{
+	width:30%; 
+	height: 2rem; 
+	float: right;
+}
+.btnlist{
+	width:1cm; 
+	height: 2rem; 
+	float: right;
+}
+
+.btncontentdown{
+	width:10rem; 
+	height: 2rem; 
+}
+	
+/*input*/
+input[type="text"] {
+ 	height: 2rem;
+    text-align: left;
+
+}
+.content input[type="text"] {
+    width: 70% !important;
+    height: 2rem;
+    margin: 0;
+    text-align: left;
+    font-size: 1em;
+    padding-left: 5px;
+    display: inline;
+    outline: none;
+    box-sizing: border-box;
+    color: black;
+    background: inherit;
+    text-align: center;
+}
+
+input[type="text"].list {
+    width: 20% ;
+    height: 26px;
+    margin: 0;
+    text-align: left;
+}
+select.list {
+    width: 2cm ;
+    height: 32px;
+    margin: 0;
+    text-align: left;
+}
+
+/*table*/
+table{
+	 margin : 20px 0 ;
+	 width:100%;
+	 border : 1px solid #1d435c;
+	 border-collapse : collapse; 
+     text-align: center;
+	}
+td, th {
+	 border-bottom : 1px dotted darkgray;
+	 padding : 5px;
+	 
+	}
+.tdleft {
+text-align: left;
+	 
+	}
+.tdDel{
+	 border-right : 1px dotted darkgray;
+	 padding : 5px;
+}
+.tdDelwidth{
+	 border-right : 1px dotted darkgray;
+	 padding : 5px;
+	 width: 20%;
+}
+.writer tr td:last-child {
+ text-align: left;
+}

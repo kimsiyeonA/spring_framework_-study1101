@@ -2,6 +2,8 @@ package com.myaws.myapp.controller;
 
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpSession;
+
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -96,7 +98,7 @@ public class MemberController {
 	// 지웠을 때 결과 확인 가능 http://localhost:8080/myapp/member/memberIdCheck.aws?memberId=%E3%84%B9%E3%84%B9%E3%84%B9
 	// Post로 지정하면 확인 못함
 	public JSONObject memberIdCheck(@RequestParam("memberId") String memberId) {
-		logger.info("memberIdCheck ����");
+		logger.info("memberIdCheck 들어옴");
 		logger.info("memberId"+memberId);
 		
 		// 경우에 따라 객체생성을 할 수도 있음 -> 포조 방식
@@ -119,7 +121,8 @@ public class MemberController {
 			@RequestParam("memberid") String memberid, 
 			@RequestParam("memberpwd") String memberpwd,
 			// 일회용 + 모델의 기능
-			RedirectAttributes rttr
+			RedirectAttributes rttr,
+			HttpSession session
 			) {// usebean 처럼 바운딩 받아 쓰기
 
 		MemberVo mv = memberService.memberLoginCheck(memberid);
@@ -130,36 +133,29 @@ public class MemberController {
 		
 			
 			if(bCryptPasswordEncoder.matches(memberpwd, reservedPwd)  ){
-				//System.out.println("��й�ȣ ��ġ");
+
 				
-				// ���� : �ϳ��� ���Ἲ ip�� ���Ƶ� ����id���� �� �ٸ��� / ȸ�������� ���ǿ� ����
+				// 세션 : 하나의 연결성 ip는 같아도 세션id값은 다 다르다 / 회원정보를 세션에 넣음
 				  
 				rttr.addAttribute("midx",mv.getMidx()); 
 				rttr.addAttribute("memberId",mv.getMemberid());
 				rttr.addAttribute("memberName",mv.getMembername());
 				 
-				  
 				// 쿼리와 input 네임을 바인딩하기 위해서 소문자로 작성함
-				// 
-				path="redirect:/";
+				logger.info("saveUrl===> "+session.getAttribute("saveUrl"));
+				if(session.getAttribute("saveUrl") != null) {
+					path="redirect:"+session.getAttribute("saveUrl").toString();
+				}else {
+					path="redirect:/";	
+				}
 				
 			}else {
-				/*
-				 * rttr.addAttribute("midx",""); 
-				 * rttr.addAttribute("memberId","");
-				 * rttr.addAttribute("memberName","");
-				 */
 				rttr.addFlashAttribute("msg","아이디/비밀번호를 확인해주세요.");
 				// 담아놓으면 한번만 쓸 수 있음 (세션을 가지고 갔다가 한번 쓰면 사라짐)
 				path="redirect:/member/memberLogin.aws";
 				
 			}
 		}else {
-			/* 로그인하면 세션에 담기 위해서
-			 * rttr.addAttribute("midx",""); 
-			 * rttr.addAttribute("memberId","");
-			 * rttr.addAttribute("memberName","");
-			 */
 			rttr.addFlashAttribute("msg","해당하는 아이디가 없습니다.");
 			path="redirect:/member/memberLogin.aws";
 			
@@ -175,11 +171,22 @@ public class MemberController {
 	@RequestMapping(value = "memberList.aws", method = RequestMethod.GET)
 	public String memberList(Model model) {
 		
-		logger.info("memberList ����");
+		logger.info("memberList 들어옴");
 		ArrayList<MemberVo> alist = memberService.memberSelectAll();
 		
 		model.addAttribute("alist", alist);
 		return "WEB-INF/member/memberList"; 
+	}
+	
+	@RequestMapping(value = "memberLogout.aws", method = RequestMethod.GET)
+	public String memberLogout(HttpSession session) {
+		
+		session.removeAttribute("midx");
+		session.removeAttribute("memberId");
+		session.removeAttribute("memberName");
+		session.invalidate();//초기화
+
+		return "redirect:/"; 
 	}
 }
 
