@@ -44,18 +44,19 @@ int totalCount = pm.getTotalCount();
 	int num = totalCount - (pm.getScri().getPage()-1) * pm.getScri().getPerPageNum();
 	
 	for(BoardVo bv : blist){ 
-/* 		 String lvlStr = "" ;
-		for(int i=1; i<=bv.getLevel();i++){
+ 		 String lvlStr = "" ;
+		for(int i=1; i<=bv.getLevel_(); i++){
 			lvlStr = lvlStr+ "&nbsp;&nbsp;&nbsp;";
-			if(i==bv.getLevel()){
+			if(i==bv.getLevel_()){
 				lvlStr=lvlStr+"ㄴ";
 			}
-		} */
+		} 
 	%>
 		<tr>
-			<td><%=bv.getBidx() %></td>
+			<td><%=num %></td>
 			<td  class="tdleft">
-			<a href="<%=request.getContextPath()%>/board/boardContents.aws?bidx=<%=bv.getBidx()%>"><%=bv.getSubject() %></a>
+				<%=lvlStr%>
+				<a href="<%=request.getContextPath()%>/board/boardContents.aws?bidx=<%=bv.getBidx()%>"><%=bv.getSubject() %></a>
 			</td>
 			<td><%=bv.getWriter() %></td>
 			<td><%=bv.getViewcnt() %></td>

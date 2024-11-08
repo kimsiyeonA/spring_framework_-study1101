@@ -6,12 +6,18 @@
 	xmlns:task="http://www.springframework.org/schema/task"
 	xmlns:jee="http://www.springframework.org/schema/jee"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xsi:schemaLocation="http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.3.xsd
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
 		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.3.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.3.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
- 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
 		
@@ -19,13 +25,14 @@
 	<!-- 빈 등록 형식 -->	
 	<!-- <bean id="tt" class="com.myaws.myapp.service.Test"></bean> -->	 <!-- class를 빈으로 등록함 -->
 		
+		<context:property-placeholder location= "classpath:properties/db.properties"/>
 	<!-- 데이터베이스 드라이브 메니져 설치 -->
 		<bean id="db" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<!-- "org.springframework.jdbc.datasource.DriverManagerDataSource" 설치할 드라이버 연결 -->	
-		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/> 
-		<property name="url" value="jdbc:mysql://127.0.0.1:3306/aws0822?useSSL=false&amp;serverTimezone=UTC&amp;allowPublicKeyRetrieval=true"></property>
-		<property name="username" value="root"/>
-		<property name="password" value="1234"/>
+		<property name="driverClassName" value="${db.driver}"/> 
+		<property name="url" value="${db.url}"/>
+		<property name="username" value="${db.username}"/>
+		<property name="password" value="${db.password}"/>
 		</bean>
 		<!-- useSSL=false - 보안인증을 하지 않겠다 | 보통 https를 쓰면 보안이 필요 =>  MySQL JDBC 연결 URL에서 사용하는 설정 -->
 		<!-- 데이터베이스와의 연결 시 SSL(보안 소켓 레이어) 암호화를 사용 => 중간에 가로채더라도 평문으로 읽을수 없게됨 // 택배 상자의 상자 -->
@@ -59,6 +66,15 @@
 			<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"></constructor-arg>
 		</bean>
 		
+		
+	<!-- 트랜젝션 사용 / namespaces에서 tx선택 AOP에서 적용됨 우회에서 객체를 찍어봄-->
+	
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<constructor-arg ref="db"/>	
+	</bean>
+	
+   	<tx:annotation-driven/>
+   	
 	<!-- 컨트롤러를 제외한 모든 것은 root를 통하게 하는 설정 -->
 	<!-- exclude: 제외 -->
 		<context:component-scan base-package="com.myaws.myapp">

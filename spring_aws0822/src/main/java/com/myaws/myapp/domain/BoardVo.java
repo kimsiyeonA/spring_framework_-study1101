@@ -4,21 +4,28 @@ public class BoardVo {
 	private int bidx;
 	private int originbidx;
 	private int depth;
-	private int level;
+	private int level_ ;
 	private String subject;
 	private String contents;
 	private String writer;
-	private String password;
-	private String filename;
 	private int recom;
 	private int viewcnt;
-	private String delyn;
+	private String filename;
 	private String writerday;
-	private String modifyday;
+	private String delyn;
 	private String ip;
+	private int midx;
+	private String modifyday;
+	private String password;
+	private String uploadedFilename;
 	
 	
-	
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
 	public int getBidx() {
 		return bidx;
 	}
@@ -37,11 +44,11 @@ public class BoardVo {
 	public void setDepth(int depth) {
 		this.depth = depth;
 	}
-	public int getLevel() {
-		return level;
+	public int getLevel_() {
+		return level_;
 	}
-	public void setLevel(int level) {
-		this.level = level;
+	public void setLevel_(int level_) {
+		this.level_ = level_;
 	}
 	public String getSubject() {
 		return subject;
@@ -61,18 +68,6 @@ public class BoardVo {
 	public void setWriter(String writer) {
 		this.writer = writer;
 	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	public String getFilename() {
-		return filename;
-	}
-	public void setFilename(String filename) {
-		this.filename = filename;
-	}
 	public int getRecom() {
 		return recom;
 	}
@@ -85,11 +80,11 @@ public class BoardVo {
 	public void setViewcnt(int viewcnt) {
 		this.viewcnt = viewcnt;
 	}
-	public String getDelyn() {
-		return delyn;
+	public String getFilename() {
+		return filename;
 	}
-	public void setDelyn(String delyn) {
-		this.delyn = delyn;
+	public void setFilename(String filename) {
+		this.filename = filename;
 	}
 	public String getWriterday() {
 		return writerday;
@@ -97,11 +92,11 @@ public class BoardVo {
 	public void setWriterday(String writerday) {
 		this.writerday = writerday;
 	}
-	public String getModifyday() {
-		return modifyday;
+	public String getDelyn() {
+		return delyn;
 	}
-	public void setModifyday(String modifyday) {
-		this.modifyday = modifyday;
+	public void setDelyn(String delyn) {
+		this.delyn = delyn;
 	}
 	public String getIp() {
 		return ip;
@@ -109,5 +104,27 @@ public class BoardVo {
 	public void setIp(String ip) {
 		this.ip = ip;
 	}
+	public int getMidx() {
+		return midx;
+	}
+	public void setMidx(int midx) {
+		this.midx = midx;
+	}
+	public String getModifyday() {
+		return modifyday;
+	}
+	public void setModifyday(String modifyday) {
+		this.modifyday = modifyday;
+	}
+	
+	public String getUploadedFilename() {
+		return uploadedFilename;
+	}
+	public void setUploadedFilename(String uploadedFilename) {
+		this.uploadedFilename = uploadedFilename;
+	}
+	
+
+	
 
 }

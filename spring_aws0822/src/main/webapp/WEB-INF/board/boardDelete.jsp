@@ -1,7 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
  <%
-String bidx = (String)request.getAttribute("bidx");
+String bidx = request.getAttribute("bidx").toString();
+
+
+	String msg="";
+	if(request.getAttribute("msg")!=null){
+		msg=(String)request.getAttribute("msg");
+	}
+	
+	
+	if(msg != ""){
+		  out.println("<script>alert('"+msg+"')</script>");
+	}
+
  %>
 <!DOCTYPE html>
 <html>
@@ -42,7 +54,7 @@ function deleteCancel(){
 </head>
 <body>
 <form name="frm">
-<input type="hidden" name="bidx" value="<%=bidx %>" >
+<input type="hidden" name="bidx" value="${bidx}" >
 <div>
 	<table >
 		<tr >

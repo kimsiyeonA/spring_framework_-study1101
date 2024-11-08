@@ -1,5 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%
+
+	String msg="";
+	if(request.getAttribute("msg")!=null){
+		msg=(String)request.getAttribute("msg");
+	}
+	
+	
+	if(msg != ""){
+		  out.println("<script>alert('"+msg+"')</script>");
+	}
+	%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,7 +48,7 @@ function check1(){
 	if(ans == true){
 		fm.action="<%=request.getContextPath()%>/board/boardWriteAction.aws";
 		fm.method="post";
-		fm.enctype="multipart/form-data"
+		fm.enctype="multipart/form-data" // 이미지와 합쳐서 바이너리 처리함
 		fm.submit();
 	}
 	return;
@@ -80,7 +93,7 @@ function check2(){
 		<tr>
 			<td class="tdDel">첨부파일</td>
 			<td>
-			<input type="file" name="filename">
+			<input type="file" name="attachfile">
 			</td>
 		</tr>
 	</table>
