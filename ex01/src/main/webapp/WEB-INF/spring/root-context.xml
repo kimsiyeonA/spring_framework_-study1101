@@ -2,9 +2,44 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
-		<context:component-scan base-package="com.example.ex01.dependency"></context:component-scan>
+	<!-- context:component-scan @component를 Appcomponent가 이파일을 참조하여 메모리영역에 올려줌-->	
+	<!--	<context:component-scan base-package="com.example.ex01.dependency"></context:component-scan>-->	
+		
+	<!-- 우리가 직접 객체화하는 것이 아니라 스프링쪽에서 객체화 하게끔 쓸 수 있는 태그 -->
+	<!-- com.zaxxer.hikari.HikariConfig를 hikariConfig 이름으로 쓰겠다 -->
+	<!-- 클래스 필드 안에 값을 넣어줄 때는 property 사용/필드에 선언 되어있는 이름을 매핑함 -->
+	<!-- HikariConfig에 이름이랑 동일하게 되어있는 파라미터를 사용함  -->
+	<!-- xml은 데이터를 전달하기 위한 형식 -->
+		<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+			<property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+			<property name="jdbcUrl" value="jdbc:mysql://127.0.0.1:3306/newspring?useSSL=false&amp;serverTimezone=UTC&amp;allowPublicKeyRetrieval=true"/>
+			<property name="username" value="root"/>
+			<property name="password" value="1234"/> 
+		</bean>
+		
+	<!--  데이터 소스 라는 객체에 전달해야 자바에서 쓸 수 있음 -->
+	<!-- destroy-method="close" : close라는 메소드를 사용해서 해당 커넥션 객체를 반납해준다 -->
+	<!-- constructor-arg : 생성자 > dataSource의 생성자에 hikariConfig를 전달 | ref :참조 -->
+		<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close"> 
+			<constructor-arg ref="hikariConfig"/>
+		</bean>
+	<!-- 커넥션을 데이터소스에 연결되어있는지 확인하기 -->
+	
+	<!-- 데이터 소스 전달해주기 -->
+	<!-- 위는 생성자로 받은거고, 밑에서는 setter로 받은거임 -->
+		<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+			<property name="dataSource" ref="dataSource"/>
+		</bean>
+		<mybatis-spring:scan base-package="com.example.ex01.mapper"/>
+		
 </beans>
