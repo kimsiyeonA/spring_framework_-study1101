@@ -59,4 +59,21 @@ update board set recom=recom+1 where bidx=#{bidx}
 update board SET delyn = 'Y', modifyday=now() where bidx=#{bidx} and midx=#{midx} and password = #{password};
 </update>
 
+<update id="boardUpdate" parameterType="bv">
+update board set subject=#{subject},contents=#{contents},writer=#{writer},modifyday=now(),filename=#{uploadedFilename},ip=#{ip}
+where bidx=#{bidx} and midx=#{midx} and password = #{password};
+</update>
+
+<update id="boardReplyUpdate" parameterType="bv">
+update board set depth=depth+1 where originbidx=#{originbidx} and depth >=#{depth}
+</update>
+<insert id="boardReplyInsert" parameterType="bv"> <!--mv 로 여러개를 넘긴다.  파라미터 없음 -->
+<selectKey keyProperty="bidx" resultType="int" order="AFTER">
+select max(bidx) as maxbidx from board where originbidx=#{originbidx}
+</selectKey>
+insert into board (originbidx,depth,level_,subject,contents,writer,password,midx,filename,ip)
+values (#{originbidx},#{depth}+1,#{level_}+1,#{subject},#{contents},#{writer},#{password},#{midx},#{uploadedFilename},#{ip})
+</insert>
+
+
 </mapper> 

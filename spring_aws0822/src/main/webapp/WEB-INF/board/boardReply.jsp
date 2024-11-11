@@ -1,10 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%
-/* int bidx = (int)request.getAttribute("bidx"); 
-int originbidx = (int)request.getAttribute("originbidx");
-int depth = (int)request.getAttribute("depth");
-int level = (int)request.getAttribute("level"); */
+ <%@page import="com.myaws.myapp.domain.*" %>
+ <% 
+ BoardVo bv = (BoardVo)request.getAttribute("bv");
 %>    
 <!DOCTYPE html>
 <html>
@@ -60,10 +58,10 @@ function replyCancel(){
 </head>
 <body>
 <form name="frm">
-<%-- <input type="hidden" name="bidx" value="<%=bidx %>">
-<input type="hidden" name="originbidx" value="<%=originbidx %>">
-<input type="hidden" name="depth" value="<%=depth %>">
-<input type="hidden" name="level" value="<%=level%>"> --%>
+ <input type="hidden" name="bidx" value="<%=bv.getBidx() %>">
+<input type="hidden" name="originbidx" value="<%=bv.getOriginbidx() %>">
+<input type="hidden" name="depth" value="<%=bv.getDepth() %>">
+<input type="hidden" name="level" value="<%=bv.getLevel_()%>">
 <div>
 	<table class="writer">
 		<tr>
@@ -93,7 +91,7 @@ function replyCancel(){
 		<tr>
 			<td class="tdDel">첨부파일</td>
 			<td>
-			<input type="file" name="filename">
+			<input type="file" name="attachfile">
 			</td>
 		</tr>
 	</table>

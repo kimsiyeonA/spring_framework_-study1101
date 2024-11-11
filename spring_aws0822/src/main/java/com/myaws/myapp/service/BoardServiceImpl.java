@@ -90,5 +90,27 @@ public class BoardServiceImpl implements BoardService {
 		
 		return cut;
 	}
+
+	@Override
+	public int boardUpdate(BoardVo bv) {
+		int cut = bm.boardUpdate(bv);
+		//System.out.println("BoardServiceImpl boardUpdate cut"+cut);
+		return cut;
+	}
+
+	// 하나의 작은 그룹으로 만들어서 실행
+	// 하나라도 실패하면 원상복귀, 둘다 성공하면 실행
+	@Transactional
+	@Override
+	public int boardReply(BoardVo bv) {
+		int value = bm.boardReplyUpdate(bv);
+		//BoardServiceImpl boardReply value==> 2-3은 이후 값이 업데이트 되었다는 뜻
+		System.out.println("BoardServiceImpl boardReply value==> "+value);
+		int value2 = bm.boardReplyInsert(bv);
+		System.out.println("BoardServiceImpl boardReply value2==> "+value2);
+		int maxBidx = bv.getBidx();
+		System.out.println("BoardServiceImpl boardReply maxBidx==> "+maxBidx);
+		return maxBidx;
+	}
 	
 }

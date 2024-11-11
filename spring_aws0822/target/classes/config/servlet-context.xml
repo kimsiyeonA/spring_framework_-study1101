@@ -58,6 +58,8 @@
 		<mapping path="/member/memberList.aws"/>
 		<mapping path="/board/boardWrite.aws"/>
 		<mapping path="/board/boardDelete.aws"/>
+		<mapping path="/board/boardUpdate.aws"/>
+		<mapping path="/board/boardReply.aws"/>
 		<beans:ref bean="authInterceptor"/>
 	</interceptor>
 	</interceptors>

@@ -42,12 +42,14 @@ function alertList(){
 
  $(document).ready(function() {
     //lert("추천버튼 클릭1"); 
-    
-    $("#dUrl").click(function() {
-		$("#dUrl").attr("href", download()); // dUrl이라는 id를 가진 태그의 href 속성에 download() 함수로 리턴받은 값을 넣는다.
-          
-    });
-    
+	$("#dUrl").html(getOriginalFileName("<%=bv.getFilename()%>"));	
+
+	// dUrl이라는 id를 가진 태그의 href 속성에 download() 함수로 리턴받은 값을 넣는다.
+	$("#dUrl").click(function() {
+	    $("#dUrl").attr("href", download());
+	    return;
+	});
+	    
     $("#btn").click(function() {
         //alert("추천버튼 클릭");
 
@@ -73,7 +75,7 @@ function alertList(){
  }
 
  function getOriginalFileName(fileName) { // 원본 파일 이름 추출
-     var idx = fileName.lastIndexOf("s_") + 1; // DB에 있는 파일 이름 형식 : /2024/11/08/s-64ca590f-3e9e-4194-80f6-c6645e1f611f_rose.jpg
+     var idx = fileName.lastIndexOf("_") + 1; // DB에 있는 파일 이름 형식 : /2024/11/08/s-64ca590f-3e9e-4194-80f6-c6645e1f611f_rose.jpg
      return fileName.substr(idx);
  }
 
@@ -82,12 +84,12 @@ function alertList(){
      var end = fileName.substr(14); // 14부터 끝까지 추출. 64ca590f-3e9e-4194-80f6-c6645e1f611f_rose.jpg
      return front + end; // 13번 문자 제외하여 연결
  }
-
- function download() { // 주소 사이에 & 다운 로드 주소를 리턴 // 썸네일 이미지 이름으로 원본 이미지 이름 변환
-     var downloadImageName = getImageLink("<%=bv.getFilename()%>"); 
-     var downLink = "<%=request.getContextPath()%>/board/displayFile.aws?fileName=" + downloadImageName + "&down=1";
-     return downLink;
- }
+//주소 사이에 & 다운 로드 주소를 리턴 // 썸네일 이미지 이름으로 원본 이미지 이름 변환
+ function download() {
+	    var downloadImage = getImageLink("<%=bv.getFilename()%>");
+	    var downLink = "<%=request.getContextPath()%>/board/displayFile.aws?fileName=" + downloadImage + "&down=1";
+	    return downLink;
+	}
   
 </script>
 </head>
@@ -104,18 +106,19 @@ function alertList(){
 		 <%=bv.getContents() %>
 		</p>
 	</div>
-	
+	<%if(bv.getFilename() == null || bv.getFilename().equals("")){%><br><br><% }else{ %>
 		<img src="<%=request.getContextPath()%>/board/displayFile.aws?fileName=<%=bv.getFilename()%>">
-		<%=bv.getFilename()%>
-		<a href="<%=request.getContextPath() %>/board/displayFile.aws?fileName=<%=bv.getFilename()%>&down=1" id ="dUrl">
+
+		<a  id="dUrl"  href="#" >
 		<button type = "button"  class="btncontentdown"  name="btn2" >
 		첨부파일 다운로드	
 		</button>
 		</a>
+	<%} %>
 </div>
 <br>
 <div class="btnLeft">
- 	<a href="<%=request.getContextPath() %>/board/boardUpdate.aws?bidx=<%-- <%=bv.getBidx() %> --%>">
+ 	<a href="<%=request.getContextPath() %>/board/boardUpdate.aws?bidx=<%=bv.getBidx() %>">
 		<button type = "button" onclick="alertUpdate();">
 		수정
 		</button>
@@ -127,7 +130,7 @@ function alertList(){
 		</button>
 	</a>
 	
-	<a href="<%=request.getContextPath() %>/board/boardReply.aws?bidx=<%-- <%=bv.getBidx() %> --%>">
+	<a href="<%=request.getContextPath() %>/board/boardReply.aws?bidx= <%=bv.getBidx() %> ">
 		<button type = "button" onclick="alertReply();">
 		답변
 		</button>

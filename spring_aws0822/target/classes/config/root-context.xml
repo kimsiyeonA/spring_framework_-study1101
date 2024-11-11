@@ -75,6 +75,8 @@
 	
    	<tx:annotation-driven/>
    	
+   	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+   	
 	<!-- 컨트롤러를 제외한 모든 것은 root를 통하게 하는 설정 -->
 	<!-- exclude: 제외 -->
 		<context:component-scan base-package="com.myaws.myapp">
