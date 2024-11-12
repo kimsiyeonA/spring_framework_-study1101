@@ -17,7 +17,8 @@ int totalCount = pm.getTotalCount();
 <head>
 <meta charset="UTF-8">
 <title>글목록</title>
- <link href="/resources/css/boardCss.css" type="text/css" rel="stylesheet">
+<link href="<%=request.getContextPath() %>/resources/css/boardCssReal.css" rel="stylesheet">
+
 
 </head>
 <body>

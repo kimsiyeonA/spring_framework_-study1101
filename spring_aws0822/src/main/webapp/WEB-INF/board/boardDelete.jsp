@@ -20,7 +20,7 @@ String bidx = request.getAttribute("bidx").toString();
 <head>
 <meta charset="UTF-8">
 <title>글삭제</title>
- <link href="/resources/css/boardCss.css" type="text/css" rel="stylesheet">
+<link href="<%=request.getContextPath() %>/resources/css/boardCssReal.css" rel="stylesheet">
 <script>
 
 function check1(){

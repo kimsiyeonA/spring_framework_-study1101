@@ -13,7 +13,7 @@
 <head>
 <meta charset="UTF-8">
 <title>글내용</title>
- <link href="/resources/css/boardCss.css" type="text/css" rel="stylesheet">
+<link href="<%=request.getContextPath() %>/resources/css/boardCssReal.css" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script> 
 function alertUpdate(){
@@ -39,6 +39,74 @@ function alertList(){
 	return; 
 	
 }
+function commentDel(cidx){	
+	let ans= confirm("삭제하시겠습니까?");	
+	if (ans== true){
+		
+		$.ajax({
+			type :  "get",    //전송방식
+			url : "<%=request.getContextPath()%>/comment/commentDeleteAction.aws?cidx="+cidx,
+			dataType : "json",       // json타입은 문서에서  {"키값" : "value값","키값2":"value값2"}
+			success : function(result){   //결과가 넘어와서 성공했을 받는 영역
+			//	alert("전송성공 테스트");	
+			//	alert(result.value);
+			$.boardCommentList();			
+							
+			},
+			error : function(){  //결과가 실패했을때 받는 영역						
+				alert("전송실패");
+			}			
+		});			
+	}	
+	return;
+}
+
+//jquery로 만드는 함수  ready밖에 생성
+$.boardCommentList = function(){
+	//alert("ddddddd");
+	$.ajax({
+		type :  "get",    //전송방식 // 파라미터로 넘기지 않고 주소사이에 넣어서 주소를 표현하는 것을 전달함 > 주소 패스 사이에 집어넣어서 사용함
+		url : "<%=request.getContextPath()%>/comment/<%=bv.getBidx()%>/commentList.aws",
+		dataType : "json",       // json타입은 문서에서  {"키값" : "value값","키값2":"value값2"}
+		success : function(result){   //결과가 넘어와서 성공했을 받는 영역
+		alert("전송성공 테스트");			
+		
+		var strTr = "";				
+		$(result.clist).each(function(){	
+			
+			var btnn="";			
+			 //현재로그인 사람과 댓글쓴 사람의 번호가 같을때만 나타내준다
+			if (this.midx == "<%=midx%>") {
+				if (this.delyn=="N"){
+					btnn= "<button type='button' onclick='commentDel("+this.cidx+");'>삭제</button>";
+				}			
+			}
+			strTr = strTr + "<tr>"
+			+"<td>"+this.cidx+"</td>"
+			+"<td>"+this.cwriter+"</td>"
+			+"<td class='content'>"+this.ccontents+"</td>"
+			+"<td>"+this.writeday+"</td>"
+			+"<td>"+btnn+"</td>"
+			+"</tr>";					
+		});		       
+		
+		var str  = "<table class='replyTable'>"
+			+"<tr>"
+			+"<th>번호</th>"
+			+"<th>작성자</th>"
+			+"<th>내용</th>"
+			+"<th>날짜</th>"
+			+"<th>DEL</th>"
+			+"</tr>"+strTr+"</table>";		
+		
+		$("#commentListView").html(str);		
+						
+		},
+		error : function(){  //결과가 실패했을때 받는 영역						
+			alert("전송실패");
+		}			
+	});	
+}
 
  $(document).ready(function() {
     //lert("추천버튼 클릭1"); 
@@ -50,6 +118,8 @@ function alertList(){
 	    return;
 	});
 	    
+	$.boardCommentList();	
+
     $("#btn").click(function() {
         //alert("추천버튼 클릭");
 
@@ -66,6 +136,8 @@ function alertList(){
             }
         });
     });
+    
+    
 });
 
 //파일 다운로드시 썸네일을 다운로드 되므로 파일 이름에서 "s-"를 제거해야함
@@ -90,6 +162,8 @@ function alertList(){
 	    var downLink = "<%=request.getContextPath()%>/board/displayFile.aws?fileName=" + downloadImage + "&down=1";
 	    return downLink;
 	}
+	
+// 하나의 주소고 하나의 표현
   
 </script>
 </head>
@@ -152,7 +226,8 @@ function alertList(){
 	</div>
 </div>
 <br>
-<div>
+	<div id="commentListView"></div>
+<!-- <div>
 	<table>
 		<tr>
 			<th>번호</th>
@@ -169,7 +244,7 @@ function alertList(){
 			<td>삭제</td>
 		</tr>
 	</table>
-</div>
+</div> -->
 </form>
 </body>
 </html>
