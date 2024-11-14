@@ -8,8 +8,24 @@
 
 
 <select id="commentSelectAll"  parameterType="int"   resultType="cv">
-SELECT * FROM comment where delyn='N' and bidx=#{bidx} ORDER BY cidx DESC
+<!--  같은 자료형으로 여러개 넘길 때는 번호로 쓴다 //  배열처럼 담아서 날라와서 0부터 시작이다. -->
+SELECT * FROM comment where delyn='N' and bidx=#{0} ORDER BY cidx DESC limit 0,#{1}
 </select>
+
+<select id="commentTotalCut"  parameterType="int"   resultType="Integer">
+<!--  같은 자료형으로 여러개 넘길 때는 번호로 쓴다 //  배열처럼 담아서 날라와서 0부터 시작이다. -->
+SELECT count(*) as cnt FROM comment where delyn='N' and bidx=#{bidx} 
+</select>
+
+
+<insert id="commentInsert" parameterType="cv" > <!-- insert 값에는 담을 파라미터 타입은 있지만 리턴할 타입은 없음-->
+insert into comment(csubject,ccontents,cwriter,bidx,midx,cip)
+value(null,#{ccontents},#{cwriter},#{bidx},#{midx},#{cip})
+</insert>
+
+<update id="commentDelete" parameterType="cv">
+update comment set delyn='Y',cip=#{cip}  where cidx=#{cidx} and midx=#{midx}
+</update>
 
 
 

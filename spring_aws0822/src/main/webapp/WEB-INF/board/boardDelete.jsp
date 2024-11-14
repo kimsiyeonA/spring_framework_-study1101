@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
  <%
-String bidx = request.getAttribute("bidx").toString();
+/* String bidx = request.getAttribute("bidx").toString();
 
 
 	String msg="";
@@ -12,7 +13,7 @@ String bidx = request.getAttribute("bidx").toString();
 	
 	if(msg != ""){
 		  out.println("<script>alert('"+msg+"')</script>");
-	}
+	} */
 
  %>
 <!DOCTYPE html>
@@ -20,7 +21,7 @@ String bidx = request.getAttribute("bidx").toString();
 <head>
 <meta charset="UTF-8">
 <title>글삭제</title>
-<link href="<%=request.getContextPath() %>/resources/css/boardCssReal.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/resources/css/boardCssReal.css" rel="stylesheet">
 <script>
 
 function check1(){
@@ -36,7 +37,7 @@ function check1(){
 	let ans = confirm("삭제하시겠습니까");
 	
 	if(ans == true){
-		fm.action="<%=request.getContextPath()%>/board/boardDelectAction.aws";
+		fm.action="${pageContext.request.contextPath}/board/boardDelectAction.aws";
 		fm.method="post";
 		fm.submit();
 	}

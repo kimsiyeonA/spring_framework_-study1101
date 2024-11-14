@@ -1,8 +1,10 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
- <%@page import="com.myaws.myapp.domain.*" %>
- <% 
- BoardVo bv = (BoardVo)request.getAttribute("bv");
+	pageEncoding="UTF-8"%>
+<%@page import="com.myaws.myapp.domain.*"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<% 
+/*  BoardVo bv = (BoardVo)request.getAttribute("bv");
  
 	String msg="";
 	if(request.getAttribute("msg")!=null){
@@ -12,15 +14,17 @@
 	
 	if(msg != ""){
 		  out.println("<script>alert('"+msg+"')</script>");
-	}
- %> 
+	} */
+ %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>글수정</title>
-<link href="<%=request.getContextPath() %>/resources/css/boardCssReal.css" rel="stylesheet">
- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link
+	href="${pageContext.request.contextPath}/resources/css/boardCssReal.css"
+	rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 
 function check1(){
@@ -48,7 +52,7 @@ function check1(){
 	let ans = confirm("저장하시겠습니까?")
 	
 	if(ans==true){
-		fm.action="<%=request.getContextPath()%>/board/boardUpdateAction.aws";
+		fm.action="${pageContext.request.contextPath}/board/boardUpdateAction.aws";
 		fm.method="post"
 		fm.enctype="multipart/form-data"
 		fm.submit();
@@ -82,77 +86,99 @@ function getImageLink(fileName) { // 링크에서 이미지 추출
 }
 //주소 사이에 & 다운 로드 주소를 리턴 // 썸네일 이미지 이름으로 원본 이미지 이름 변환
 function download() {
-	    var downloadImage = getImageLink("<%=bv.getFilename()%>");
+	    var downloadImage = getImageLink("${bv.filename}");
 	    var downLink = "<%=request.getContextPath()%>/board/displayFile.aws?fileName=" + downloadImage + "&down=1";
 	    return downLink;
 	}
 $(document).ready(function() {
 
-	$("#dUrl").html(getOriginalFileName("<%=bv.getFilename()%>"));	
+	$("#dUrl").html(getOriginalFileName("${bv.filename}"));	
 
 	    
 });
+<%-- function download() {
+    var downloadImage = getImageLink("<%=bv.getFilename()%>");
+    var downLink = "<%=request.getContextPath()%>/board/displayFile.aws?fileName=" + downloadImage + "&down=1";
+    return downLink;
+}
+$(document).ready(function() {
+
+$("#dUrl").html(getOriginalFileName("<%=bv.getFilename()%>"));	
+
+    
+}); --%>
 </script>
 </head>
 <body>
-<form name="frm">
-<div>
-<input type="hidden" name="bidx" value="<%=bv.getBidx() %>">
-<input type="hidden" name="midx" value="<%=bv.getMidx() %>">
-<input type="hidden" name="filename" value="<%=bv.getFilename() %>">
-	<table class="writer">
-		<tr>
-			<td  class="tdDel">제목</td>
-			<td>
-			<input type="text"  name="subject"  style = "width:700px; height: 2rem;" value="<%=bv.getSubject() %>">
-			</td>
-		</tr>
-		<tr>
-			<td class="tdDel">내용</td>
-			<td>
-			<textarea  name="contents" style = "width:700px; height: 15rem;" ><%=bv.getContents() %></textarea>
-			</td>
-		</tr>
-		<tr>
-			<td class="tdDel">작성자</td>
-			<td>
-			<input type="text" name="writer"  style = "width:100px; height: 1rem;" value="<%=bv.getWriter()%>">
-			</td>
-		</tr>
-		<tr>
-			<td class="tdDel">비밀번호</td>
-			<td>
-			<input type="password"  name="password"  style = "width:100px; height: 1rem;" >
-			</td>
-		</tr>
-		<tr>
-			<td class="tdDel">첨부파일</td>
-			<td>
-				<table>
-				
+	<form name="frm">
+		<div>
+			<input type="hidden" name="bidx" value="${bv.bidx}"> <input
+				type="hidden" name="midx" value="${bv.midx}"> <input
+				type="hidden" name="filename" value="${bv.filename}">
+			<table class="writer">
 				<tr>
-					<td colspan = "2"><input type="file" name="attachfile"  > </td>
-				</tr>
-
-				<%if(bv.getFilename() == null || bv.getFilename().equals("")){}else{ %>
-				<tr>
-					<td class="tdDelwidth">이전 저장된 파일</td>
-					<td>
-						<span id="dUrl"  ><%=bv.getFilename()%></span>
-						<img src="<%=request.getContextPath()%>/board/displayFile.aws?fileName=<%=bv.getFilename()%>">
+					<td class="tdDel">제목</td>
+					<td><input type="text" name="subject"
+						style="width: 700px; height: 2rem;" value="${bv.subject}">
 					</td>
 				</tr>
-				<%} %>
-				</table>
-			
-			</td>
-		</tr>
-	</table>
-</div>
-<div class="divlineright">
-	<button type = "button" onclick="check1();">저장</button>
-	<button type = "button" onclick="updateCancel(); history.back();">취소</button>
-</div>
-</form>
+				<tr>
+					<td class="tdDel">내용</td>
+					<td><textarea name="contents"
+							style="width: 700px; height: 15rem;">${bv.contents}</textarea></td>
+				</tr>
+				<tr>
+					<td class="tdDel">작성자</td>
+					<td><input type="text" name="writer"
+						style="width: 100px; height: 1rem;" value="${bv.writer}"></td>
+				</tr>
+				<tr>
+					<td class="tdDel">비밀번호</td>
+					<td><input type="password" name="password"
+						style="width: 100px; height: 1rem;"></td>
+				</tr>
+				<tr>
+					<td class="tdDel">첨부파일</td>
+					<td>
+						<table>
+
+							<tr>
+								<td colspan="2"><input type="file" name="attachfile">
+								</td>
+							</tr>
+
+							<%-- <%if(bv.getFilename() == null || bv.getFilename().equals("")){}else{ %> --%>
+							<c:choose>
+							<c:when test="${empty bv.filename}">
+							</c:when>
+							<c:otherwise>
+								<tr>
+									<td class="tdDelwidth">이전 저장된 파일</td>
+									<td><span id="dUrl">${bv.filename}</span> <img
+										src="${pageContext.request.contextPath}/board/displayFile.aws?fileName=${bv.filename}">
+									</td>
+								</tr>
+							</c:otherwise>
+							</c:choose>
+<%-- 							<<%if(bv.getFilename() == null || bv.getFilename().equals("")){}else{ %>--%>
+<%-- 							<tr>
+								<td class="tdDelwidth">이전 저장된 파일</td>
+								<td><span id="dUrl"><%=bv.getFilename()%></span> <img
+									src="<%=request.getContextPath()%>/board/displayFile.aws?fileName=<%=bv.getFilename()%>">
+								</td>
+							</tr> --%>
+	<%-- 						<%} %> --%>
+							
+						</table>
+
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div class="divlineright">
+			<button type="button" onclick="check1();">저장</button>
+			<button type="button" onclick="updateCancel(); history.back();">취소</button>
+		</div>
+	</form>
 </body>
 </html>

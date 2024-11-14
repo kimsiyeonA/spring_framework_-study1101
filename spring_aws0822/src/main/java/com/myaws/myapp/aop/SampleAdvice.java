@@ -16,9 +16,9 @@ public class SampleAdvice {
 	@Before("execution(* com.myaws.myapp.service.BoardService*.*(..))")
 	public void startLog() {
 		
-		logger.info("----------------------------------");
-		logger.info("aop 로그 테스트중입니다.");
-		logger.info("-----------------------------------");
+		//logger.info("----------------------------------");
+		//logger.info("aop 로그 테스트중입니다.");
+		//logger.info("-----------------------------------");
 		//System.out.println("테스트");		
 	}
 }

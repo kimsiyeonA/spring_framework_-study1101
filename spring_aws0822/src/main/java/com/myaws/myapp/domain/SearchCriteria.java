@@ -2,12 +2,11 @@ package  com.myaws.myapp.domain;
 
 import org.springframework.stereotype.Component;
 
-@Component // ì„œë¹„ìŠ¤ Component, ì»¨íŠ¸ë¡¤ëŸ¬ Component ì¡°ìƒê²©
+@Component // ¼­ºñ½º Component, ÄÁÆ®·Ñ·¯ Component Á¶»ó°İ
 public class SearchCriteria extends Criteria {
 		
-		private String searchType ; // ê²€ìƒ‰ì„ íƒ
-		private String keyword; // ê²€ìƒ‰ì–´
-		
+	private String searchType ; // °Ë»ö¼±ÅÃ
+	private String keyword; // °Ë»ö¾î
 		
 		public String getSearchType() {
 			return searchType;

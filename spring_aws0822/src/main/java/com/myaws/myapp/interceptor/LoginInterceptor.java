@@ -7,18 +7,15 @@ import javax.servlet.http.HttpSession;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-// ȸ�������� ���ǿ� ��� ����
-// HandlerInterceptorAdapter
+
 public class LoginInterceptor extends HandlerInterceptorAdapter {
 
-	// �α��� �Ŀ� ȸ�������� ���ǿ� ��´�.
+
 	
-	@Override // �����ϱ� ����
+	@Override 
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		
-		// ����ä�� �ϱ� ���� ó���ϴ� �޼ҵ�
-		// ���� ������� ������ �ִ°� �ִٸ� ����� ���
+	
 		
 		HttpSession session = request.getSession();
 		
@@ -36,17 +33,17 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 	 * This implementation is empty.
 	 */
 	@Override
-	public void postHandle( // ������ ���ǿ� ��� ����
+	public void postHandle( 
 			HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView)
 			throws Exception {
 		
-		// RedirectAttibutes이나 Model 사용한다.
+		// RedirectAttibutes�̳� Model ����Ѵ�.
 		//ModelAndView 
 		String midx = modelAndView.getModel().get("midx").toString();
 		String memberId = modelAndView.getModel().get("memberId").toString();
 		String memberName = modelAndView.getModel().get("memberName").toString();
 		
-		modelAndView.getModel().clear(); // �Ѿ���� �Ķ���� model���� �����.
+		modelAndView.getModel().clear(); 
 		
 		HttpSession session = request.getSession();
 		if(midx!=null) {

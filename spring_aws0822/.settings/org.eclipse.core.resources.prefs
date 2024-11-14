@@ -1,2 +1,7 @@
 eclipse.preferences.version=1
+encoding//src/main/java/com/myaws/myapp/controller/BoardController.java=UTF-8
+encoding//src/main/java/com/myaws/myapp/controller/MemberController.java=UTF-8
+encoding//src/main/java/com/myaws/myapp/interceptor/AuthInterceptor.java=UTF-8
+encoding//src/main/java/com/myaws/myapp/service/BoardServiceImpl.java=UTF-8
+encoding//src/main/java/com/myaws/myapp/service/MemberServiceImpl.java=UTF-8
 encoding//src/main/webapp/WEB-INF/views/home.jsp=UTF-8

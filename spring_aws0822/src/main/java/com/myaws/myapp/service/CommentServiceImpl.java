@@ -27,10 +27,36 @@ public class CommentServiceImpl implements CommentService {
 	}
 	
 	@Override
-	public ArrayList<CommentVo> commentSelectAll(int bidx) {
-
-		ArrayList<CommentVo> clist = cm.commentSelectAll(bidx);
+	public ArrayList<CommentVo> commentSelectAll(int bidx, int block) {
+		// 햇시맵으로 넘길 수 있지만 자료형이 같은 경우에는 같이 넘길 수 있다.
+		block=block*15; //0부터 리밋트 함수 쓰기
+		ArrayList<CommentVo> clist = cm.commentSelectAll(bidx,block);
 		return clist;
+	}
+
+	@Override
+	public int commentInsert(CommentVo cv) {
+		int value = cm.commentInsert(cv);
+		return value;
+	}
+
+	@Override
+	public int commentDelete(CommentVo cv) {
+		int value = cm.commentDelete(cv);
+		System.out.println("CommentServiceImpl commentDelete midx" + cv.getMidx());
+		System.out.println("CommentServiceImpl commentDelete cidx" + cv.getCidx());
+		System.out.println("CommentServiceImpl commentDelete Cip" + cv.getCip());
+		System.out.println("CommentServiceImpl commentDelete Bidx" + cv.getBidx());
+		System.out.println("CommentServiceImpl commentDelete value" + value);
+		return value;
+	}
+
+
+
+	@Override
+	public int commentTotalCut(int bidx) {
+		int cnt = cm.commentTotalCut(bidx);
+		return cnt;
 	}
 
 	

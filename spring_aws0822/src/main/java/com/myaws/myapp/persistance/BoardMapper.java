@@ -9,11 +9,11 @@ import com.myaws.myapp.domain.SearchCriteria;
 
 
 public interface BoardMapper {
-	public ArrayList<BoardVo> boardSelectAll(HashMap<String,Object> hm);// í•´ì‹œ ë§µì„ ë„˜ê¸°ëŠ” ë§ˆì´ë°”í‹°ìŠ¤ 
+	public ArrayList<BoardVo> boardSelectAll(HashMap<String,Object> hm);// ÇØ½Ã ¸ÊÀ» ³Ñ±â´Â ¸¶ÀÌ¹ÙÆ¼½º 
 	
 	public int boardTotalCount(SearchCriteria scri) ; 
 	
-	public int boardInsert(BoardVo bv) ; // Mybatis ìš© ë©”ì„œë“œ ì¶”ê°€
+	public int boardInsert(BoardVo bv) ; // Mybatis ¿ë ¸Ş¼­µå Ãß°¡
 	
 	public int boardOriginbidxUpdate(int bidx);
 	

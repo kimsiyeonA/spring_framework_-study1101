@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-    <%
-
-	String msg="";
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%
+/* 	String msg="";
 	if(request.getAttribute("msg")!=null){
 		msg=(String)request.getAttribute("msg");
 	}
@@ -10,15 +10,17 @@
 	
 	if(msg != ""){
 		  out.println("<script>alert('"+msg+"')</script>");
-	}
-	%>
+	} */
+%>
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>글쓰기</title>
-<link href="<%=request.getContextPath() %>/resources/css/boardCssReal.css" rel="stylesheet">
+<link
+	href="${pageContext.request.contextPath}/resources/css/boardCssReal.css"
+	rel="stylesheet">
 <script>
 
 function check1(){
@@ -46,62 +48,56 @@ function check1(){
 	let ans = confirm("저장하시겠습니까?");
 	
 	if(ans == true){
-		fm.action="<%=request.getContextPath()%>/board/boardWriteAction.aws";
-		fm.method="post";
-		fm.enctype="multipart/form-data" // 이미지와 합쳐서 바이너리 처리함
-		fm.submit();
+		fm.action="${pageContext.request.contextPath}/board/boardWriteAction.aws";
+			fm.method = "post";
+			fm.enctype = "multipart/form-data" // 이미지와 합쳐서 바이너리 처리함
+			fm.submit();
+		}
+		return;
 	}
-	return;
-}
 
-function check2(){
+	function check2() {
 
-	alert("글작성을 취소하시겠습니까?");
+		alert("글작성을 취소하시겠습니까?");
 
-	return; 
-}
+		return;
+	}
 </script>
 </head>
 <body>
-<form name="frm">
-<div>
-	<table class="writer">
-		<tr>
-			<td  class="tdDel">제목</td>
-			<td>
-			<input type="text" name="subject" style = "width:700px; height: 2rem;">
-			</td>
-		</tr>
-		<tr>
-			<td class="tdDel">내용</td>
-			<td>
-			<textarea name="contents" style = "width:700px; height: 15rem;" ></textarea>
-			</td>
-		</tr>
-		<tr>
-			<td class="tdDel">작성자</td>
-			<td>
-			<input type="text" name="writer" style = "width:100px; height: 1rem;" >
-			</td>
-		</tr>
-		<tr>
-			<td class="tdDel">비밀번호</td>
-			<td>
-			<input type="password" name="password" style = "width:100px; height: 1rem;" >
-			</td>
-		</tr>
-		<tr>
-			<td class="tdDel">첨부파일</td>
-			<td>
-			<input type="file" name="attachfile">
-			</td>
-		</tr>
-	</table>
-</div>
-<div class="divlineright">
-	<button  type = "button" name="btn1" onclick="check1();">저장</button>
-	<button  type = "button" name="btn2" onclick="history.back();">취소</button>
-</div>
-</form>
+	<form name="frm">
+		<div>
+			<table class="writer">
+				<tr>
+					<td class="tdDel">제목</td>
+					<td><input type="text" name="subject"
+						style="width: 700px; height: 2rem;"></td>
+				</tr>
+				<tr>
+					<td class="tdDel">내용</td>
+					<td><textarea name="contents"
+							style="width: 700px; height: 15rem;"></textarea></td>
+				</tr>
+				<tr>
+					<td class="tdDel">작성자</td>
+					<td><input type="text" name="writer"
+						style="width: 100px; height: 1rem;"></td>
+				</tr>
+				<tr>
+					<td class="tdDel">비밀번호</td>
+					<td><input type="password" name="password"
+						style="width: 100px; height: 1rem;"></td>
+				</tr>
+				<tr>
+					<td class="tdDel">첨부파일</td>
+					<td><input type="file" name="attachfile"></td>
+				</tr>
+			</table>
+		</div>
+		<div class="divlineright">
+			<button type="button" name="btn1" onclick="check1();">저장</button>
+			<button type="button" name="btn2" onclick="history.back();">취소</button>
+		</div>
+	</form>
 </body>
 </html>

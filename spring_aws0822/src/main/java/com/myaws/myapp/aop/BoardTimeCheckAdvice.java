@@ -20,17 +20,17 @@ public class BoardTimeCheckAdvice {
 	public Object timelog(ProceedingJoinPoint pjp) throws Throwable {
 		Object result= null;
 		
-		logger.info("시작하는 aop");
-		logger.info("매개변수 :" +Arrays.toString(pjp.getArgs()));
+		//logger.info("시작하는 aop");
+		//logger.info("매개변수 :" +Arrays.toString(pjp.getArgs()));
 		long startTime = System.currentTimeMillis();
 		
 		result = pjp.proceed();
 		
 		long endTime = System.currentTimeMillis();
-		logger.info("끝나는 aop");
+		//logger.info("끝나는 aop");
 		
 		long durTime = endTime - startTime;
-		logger.info(pjp.getSignature().getName()+ " 걸린시간 :"+durTime);
+		//logger.info(pjp.getSignature().getName()+ " 걸린시간 :"+durTime);
 		
 		return result;
 	}

@@ -14,7 +14,7 @@ import com.myaws.myapp.persistance.MemberMapper;
 @Service //>>@Component/@Bean가 부모 : 서비스 용도의 빈이다.
 public class MemberServiceImpl implements MemberService{
 	
-	private MemberMapper mm; // �ɹ����� �����ϱ�
+	private MemberMapper mm; 
 	
 	@Autowired //스프링 코어에다가 빈으로 만든 세션을 부름 > 객체로 생성되어 있는 것중에 같은 클래스 타입을 찾아서 주입시킴
 	public MemberServiceImpl(SqlSession sqlSession) { // 생성자를 통해서 매개변수로 SqlSession을 받음

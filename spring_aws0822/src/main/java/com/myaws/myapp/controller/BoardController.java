@@ -49,6 +49,9 @@ public class BoardController {
 	@Autowired(required = false)
 	private PageMaker pm;
 
+	@Autowired
+	private UserIp userp;
+
 	// @Autowired은 타입과 같은 것을 찾음
 	@Resource(name = "uploadPath") // 객체의 참조변수 이름을 적어줘야하고, 이름과 같은 것을 찾음 > 빈으로 되어있는 것을 주입받음
 	private String uploadPath;
@@ -56,7 +59,7 @@ public class BoardController {
 	@RequestMapping(value = "boardList.aws", method = RequestMethod.GET)
 	public String boardList(SearchCriteria scri, Model model) {
 
-		logger.info("boardList 들어옴");
+		logger.info("boardList �뱾�뼱�샂");
 
 		int cnt = boardService.boardTotalCount(scri);
 		// logger.info("boardList scri"+scri);
@@ -73,13 +76,12 @@ public class BoardController {
 		model.addAttribute("pm", pm);
 
 		return "WEB-INF/board/boardList"; // .jsp는 WEB-INF/spring/appServlet/servlet-context.xml > 에서 붇어짐
-
 	}
 
 	@RequestMapping(value = "boardWrite.aws", method = RequestMethod.GET)
 	public String boardWrite() {
 
-		logger.info("boardWrite 들어옴");
+		logger.info("boardWrite �뱾�뼱�샂");
 
 		return "WEB-INF/board/boardWrite"; // .jsp는 WEB-INF/spring/appServlet/servlet-context.xml > 에서 붇어짐
 
@@ -105,7 +107,7 @@ public class BoardController {
 
 		String midx = session.getAttribute("midx").toString();
 		int midx_int = Integer.parseInt(midx);
-		String ip = getUserIp(request);
+		String ip = userp.getUserIp(request);
 		bv.setUploadedFilename(uploadedFileName);
 		bv.setMidx(midx_int);
 		bv.setIp(ip);
@@ -188,7 +190,7 @@ public class BoardController {
 			}
 		}
 
-		return entity; // .jsp는 WEB-INF/spring/appServlet/servlet-context.xml > 에서 붇어짐
+		return entity;// .jsp는 WEB-INF/spring/appServlet/servlet-context.xml > 에서 붇어짐
 
 	}
 
@@ -208,9 +210,7 @@ public class BoardController {
 	public String boardDelete(@RequestParam("bidx") int bidx, Model model) {
 
 		logger.info("boardDelete 들어옴");
-		BoardVo bv = boardService.boardSelectOne(bidx);
-
-		model.addAttribute("bv", bv);
+		model.addAttribute("bidx", bidx);
 
 		return "WEB-INF/board/boardDelete"; // .jsp는 WEB-INF/spring/appServlet/servlet-context.xml > 에서 붇어짐
 
@@ -271,16 +271,25 @@ public class BoardController {
 		String uploadedFileName = ""; // 업로드할 파일이름 변수 선언
 		logger.info(" bv.getFilename()" + bv.getFilename());
 		System.out.println(" filename" + filename);
-		
-		if(file == null && file.isEmpty()&& bv.getFilename() != null && !bv.getFilename().isEmpty()) {
+
+		if (file == null && file.isEmpty() && bv.getFilename() != null && !bv.getFilename().isEmpty()) {
 			bv.setUploadedFilename(bv.getFilename());
-		}else if (file != null && !file.isEmpty() && bv.getFilename() != null && !bv.getFilename().isEmpty()){ // 업로드 된 파일 이름이 없지 않다면
+		} else if (file != null && !file.isEmpty() && bv.getFilename() != null && !bv.getFilename().isEmpty()) { // 업로드
+																													// 된
+																													// 파일
+																													// 이름이
+																													// 없지
+																													// 않다면
 			uploadedFileName = UploadFileUtiles.uploadFile(uploadPath, file.getOriginalFilename(), file.getBytes());
 			// IOException 오류가 나면 윗단계서 처리해줌 > 호출해주는 윗단계에서 처리함
 			// util에 있는 UploadFileUtiles 클래스를 사용해서 저장위치, 파일이름, 파일크기를 넣어줌
 			bv.setUploadedFilename(uploadedFileName);
 
-		}else if (file != null && !file.isEmpty() && bv.getFilename() == null && bv.getFilename().isEmpty()){ // 업로드 된 파일 이름이 없지 않다면
+		} else if (file != null && !file.isEmpty() && bv.getFilename() == null && bv.getFilename().isEmpty()) { // 업로드 된
+																												// 파일
+																												// 이름이
+																												// 없지
+																												// 않다면
 			uploadedFileName = UploadFileUtiles.uploadFile(uploadPath, file.getOriginalFilename(), file.getBytes());
 			// IOException 오류가 나면 윗단계서 처리해줌 > 호출해주는 윗단계에서 처리함
 			// util에 있는 UploadFileUtiles 클래스를 사용해서 저장위치, 파일이름, 파일크기를 넣어줌
@@ -289,7 +298,7 @@ public class BoardController {
 
 		String midx = session.getAttribute("midx").toString();
 		int midx_int = Integer.parseInt(midx);
-		String ip = getUserIp(request);
+		String ip = userp.getUserIp(request);
 		bv.setIp(ip);
 
 		int value = boardService.boardUpdate(bv);
@@ -344,15 +353,17 @@ public class BoardController {
 
 		}
 
+
+
 		String midx = session.getAttribute("midx").toString();
 		int midx_int = Integer.parseInt(midx);
-		String ip = getUserIp(request);
+		String ip = userp.getUserIp(request);
 		bv.setUploadedFilename(uploadedFileName);
 		bv.setMidx(midx_int);
 		bv.setIp(ip);
 
 		int maxBidx = boardService.boardReply(bv);
-		System.out.println("BoardController boardReply maxBidx==> "+maxBidx);
+		System.out.println("BoardController boardReply maxBidx==> " + maxBidx);
 
 		String path = "";
 
@@ -365,45 +376,6 @@ public class BoardController {
 
 		return path; // .jsp는 WEB-INF/spring/appServlet/servlet-context.xml > 에서 붇어짐
 
-	}
-
-	public String getUserIp(HttpServletRequest request) throws Exception {
-
-		String ip = null;
-
-		ip = request.getHeader("X-Forwarded-For");
-
-		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-			ip = request.getHeader("Proxy-Client-IP");
-		}
-		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-			ip = request.getHeader("WL-Proxy-Client-IP");
-		}
-		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-			ip = request.getHeader("HTTP_CLIENT_IP");
-		}
-		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-			ip = request.getHeader("HTTP_X_FORWARDED_FOR");
-		}
-		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-			ip = request.getHeader("X-Real-IP");
-		}
-		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-			ip = request.getHeader("X-RealIP");
-		}
-		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-			ip = request.getHeader("REMOTE_ADDR");
-		}
-		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-			ip = request.getRemoteAddr();
-		}
-
-		if (ip.equals("0:0:0:0:0:0:0:1") || ip.equals("127.0.0.1")) {
-			InetAddress address = InetAddress.getLocalHost();
-			ip = address.getHostAddress();
-		}
-
-		return ip;
 	}
 
 }
